@@ -5,6 +5,8 @@ import TextFieldGroup from '../common/TextFieldGroup'
 import TextAreaFieldGroup from '../common/TextAreaFieldGroup'
 import SelectListGroup from '../common/SelectListGroup'
 import InputGroup from '../common/InputGroup'
+import { createProfile } from '../../actions/profileActions'
+import { withRouter } from 'react-router-dom'
 
 class CreateProfile extends Component {
   constructor(props) {
@@ -28,6 +30,14 @@ class CreateProfile extends Component {
     }
   }
 
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      })
+    }
+  }
+
   onChange = e => {
     this.setState({ 
       [e.target.name]: e.target.value
@@ -36,7 +46,8 @@ class CreateProfile extends Component {
 
   onSubmit = e => {
     e.preventDefault()
-    console.log('submit')
+
+    this.props.createProfile(this.state, this.props.history)
   }
 
   displaySocialInputs = () => {
@@ -207,7 +218,8 @@ class CreateProfile extends Component {
 
 CreateProfile.propTypes = {
   profile: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  createProfile: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -215,4 +227,4 @@ const mapStateToProps = state => ({
   errors: state.errors
 })
 
-export default connect(mapStateToProps)(CreateProfile)
+export default connect(mapStateToProps, { createProfile })(withRouter(CreateProfile))
