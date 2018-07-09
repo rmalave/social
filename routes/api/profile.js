@@ -142,6 +142,9 @@ router.post('/', passport.authenticate('jwt', {
   if (req.body.bio) {
     profileFields.bio = req.body.bio
   }
+  if (req.body.githubusername) {
+    profileFields.githubusername = req.body.githubusername
+  }
   if (typeof req.body.skills !== 'undefined') {
     profileFields.skills = req.body.skills.split(',');
   }
